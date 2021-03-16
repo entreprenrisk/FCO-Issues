@@ -420,7 +420,6 @@ def main(t2s, t2e):
             dict.update({'lppls': False, 'ts':t2s, 't2':t2e})
             plot_price_in(dict)
 
-    move_ppt_slide(4)
     save_ppt('FCO_Test')
 
 def get_bubble_fraction_table(df_assets, t2s, t2e):
@@ -590,35 +589,16 @@ def comp_top_signal_rankedby_ga(n_pos, n_neg):
             ress[i] = sigi
     return ress
 
-def print_signal_table(types_list, geogs_list, n_pos, n_neg, tyge, t2):
+def print_signal_table(n_pos, n_neg, tyge, t2):
 
     result_aids = set()
     ### PREPARE AND PRINT REPORT SIGNAL TABLES
 
-    # cols_all = cols_name[:1] + cols_pid + cols_name[2:]
-    cols_all = cols_name
-    cols_final = ['name', 'pid', 'ci', 'bs', 'bg', 'bd', 'bp', 'ga', 'tcd', 'sp']
-
-    # cols_final_names = ['Name','Strongest Signal',r'DS LPPLS Confidence $ci\ [\%]$',r'Bubble Size $bs\ [\%]$',
-    #                     r'Bubble CAGR $bg\ [\%]$', r'Duration $[days]$',r'Bubble Progress $bp\ [\%]$',
-    #                     r'Geometric Average $\sqrt[3]{ci\cdot bg \cdot bp}\ [\%]$',r'Critical Time $\bar{t}_c$',
-    #                     r'Scenario Probability $[\%]$']
-
-    cols_final_names = ['Name', 'Strongest Signal', r'DS LPPLS Confidence $ci\ [\%]$', r'Bubble Size $bs\ [\%]$',
-                        r'Bubble CAGR $bg\ [\%]$', r'Duration $[days]$', r'Bubble Progress $bp\ [\%]$',
-                        r'Geometric Average $(ci,bg,bp)$', r'Critical Time $\bar{t}_c$',
-                        r'Scenario Probability $[\%]$']
-
-    # ToDo XXXX add Overall
-    types = types_list
-    geogs = ['Overall'] + geogs_list
-
-    resspn = OrderedDict()
     ress = comp_top_signal_rankedby_ga(n_pos, n_neg)
 
     ts = str((pd.Timestamp(t2) - 365 * pd.Timedelta('1d')).date())[:-2] + '01'
     conc = []
-    php = [pd.DataFrame([len(cols_all) * ['']], index=[r'%s Bubbles'%('Negative' if i else 'Positive')], columns=cols_all) for i in [0,1]]
+    php = [pd.DataFrame([len(cols_name) * ['']], index=[r'%s Bubbles'%('Negative' if i else 'Positive')], columns=cols_name) for i in [0,1]]
     for ix, (ty, ge) in enumerate(tyge):
         print(ty, ge)
         for iix,i in enumerate(ress.keys()):
